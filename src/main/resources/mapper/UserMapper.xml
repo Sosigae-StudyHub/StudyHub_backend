@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studyhub.dao.UserDao">
+
+    <resultMap id="UserResultMap" type="com.studyhub.domain.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="userType" column="user_type" javaType="com.studyhub.domain.enums.UserType"/>
+        <result property="businessNumber" column="business_number"/>
+        <result property="point" column="point"/>
+    </resultMap>
+
+    <select id="findByEmail" resultMap="UserResultMap">
+        SELECT * FROM users WHERE email = #{email}
+    </select>
+
+    <select id="existsByBusinessNumber" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+        FROM users
+        WHERE business_number = #{businessNumber}
+    </select>
+
+    <insert id="save" parameterType="com.studyhub.domain.User">
+        INSERT INTO users (
+            id, username, email, password, phone, user_type, business_number, point
+        ) VALUES (
+                     users_seq.nextval,
+                     #{username},
+                     #{email},
+                     #{password},
+                     #{phone},
+                     #{userType},
+                     #{businessNumber, jdbcType=VARCHAR},
+                     #{point}
+                 )
+    </insert>
+
+</mapper>
