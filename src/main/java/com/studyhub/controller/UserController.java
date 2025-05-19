@@ -93,4 +93,42 @@ public class UserController {
         return ResponseEntity.ok(info);
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfileInfo(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+
+        User user = userService.findById(userId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("name", user.getUsername());
+        response.put("email", user.getEmail());
+        response.put("phone", user.getPhone());
+        response.put("userType", user.getUserType().name());
+        if (user.getUserType().equals(UserType.OWNER)) {
+            response.put("businessNumber", user.getBusinessNumber());
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(HttpSession session, @RequestBody Map<String, String> payload) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+
+        String currentPassword = payload.get("currentPassword");
+        String newPassword = payload.get("newPassword");
+
+        userService.changePassword(userId, currentPassword, newPassword);
+        return ResponseEntity.ok("비밀번호가 변경되었습니다.");
+    }
+
+    @PostMapping("/change-phone")
+    public ResponseEntity<?> changePhone(HttpSession session, @RequestBody Map<String, String> payload) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+
+        String newPhone = payload.get("newPhone");
+        userService.changePhone(userId, newPhone);
+        return ResponseEntity.ok("전화번호가 변경되었습니다.");
+    }
 }

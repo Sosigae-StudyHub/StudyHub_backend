@@ -7,4 +7,9 @@ public interface UserService {
     User findUserByEmail(String email);
     boolean checkBusinessNumberExists(String businessNumber);
     User validateLogin(String email, String password);
+
+    User findById(Long id);
+
+    void changePassword(Long userId, String currentPassword, String newPassword);
+    void changePhone(Long userId, String newPhone);
 }

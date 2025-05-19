@@ -1,6 +1,7 @@
 package com.studyhub.controller;
 
 import com.studyhub.domain.StudyCafe;
+import com.studyhub.dto.StudyCafeSimpleDto;
 import com.studyhub.repository.StudyCafeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +20,19 @@ public class StudyCafeController {
     }
 
     @GetMapping("/all")
-    public List<StudyCafe> getAllCafes() {
+    public List<StudyCafeSimpleDto> getAllCafes() {
         List<StudyCafe> cafes = studyCafeRepository.findAll();
         System.out.println("✅ 카페 수: " + cafes.size());
-        return cafes;
+
+        return cafes.stream()
+                .map(c -> new StudyCafeSimpleDto(
+                        c.getId(),
+                        c.getName(),
+                        c.getAddress(),
+                        c.getLatitude(),
+                        c.getLongitude()
+                ))
+                .toList();
     }
+
 }

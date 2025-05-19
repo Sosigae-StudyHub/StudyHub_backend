@@ -38,4 +38,31 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+    }
+
+    @Override
+    public void changePassword(Long userId, String currentPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changePhone(Long userId, String newPhone) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+        user.setPhone(newPhone);
+        userRepository.save(user);
+    }
+
 }
