@@ -1,5 +1,6 @@
 package com.studyhub.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,7 +34,8 @@ public class StudyCafe {
     @Column(name = "RESERVATION_CHECK_MESSAGE")
     private String reservationCheckMessage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "OWNER_ID", nullable = false)
+    @JsonBackReference
     private User owner;
 }

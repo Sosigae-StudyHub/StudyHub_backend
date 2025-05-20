@@ -1,9 +1,9 @@
 package com.studyhub.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 @Entity
@@ -37,11 +37,13 @@ public class StudyRoom {
 
     @ManyToOne
     @JoinColumn(name = "study_cafe_id", nullable = false)
+    @JsonIgnore
     private StudyCafe studyCafe;
 
     @OneToMany(mappedBy = "studyRoom")
     private List<Reservation> reservations;
 
-    @OneToMany(mappedBy = "studyRoom")
+    @OneToMany(mappedBy = "studyRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<AvailableTimeBlock> availableTimes;
 }

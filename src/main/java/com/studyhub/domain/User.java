@@ -1,9 +1,9 @@
 package com.studyhub.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.studyhub.domain.enums.UserType;
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -34,6 +34,7 @@ public class User {
     private int point;
 
     @OneToMany(mappedBy = "owner")
+    @JsonManagedReference
     private List<StudyCafe> studyCafes;
 
     @OneToMany(mappedBy = "user")

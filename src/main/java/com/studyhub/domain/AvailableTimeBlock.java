@@ -1,5 +1,6 @@
 package com.studyhub.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class AvailableTimeBlock {
 
     @ManyToOne
     @JoinColumn(name = "study_room_id", nullable = false)
+    @JsonBackReference
     private StudyRoom studyRoom;
 
     @Column(name = "day_of_week", nullable = false)
