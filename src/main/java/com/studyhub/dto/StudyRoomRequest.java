@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class StudyRoomRequest {
+    private Long id;
     private String name; // 스터디룸 이름 (필수)
     private int maxCapacity; // 최대 수용 인원 (필수)
     private int price; // 이용 요금 (필수)
@@ -18,4 +19,5 @@ public class StudyRoomRequest {
 
     private List<Integer> availableHours;
     private Long ownerId; // 사업자 본인 ID 확인용
+    private String description; // 스터디룸 소개
 }

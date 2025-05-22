@@ -46,4 +46,7 @@ public class StudyRoom {
     @OneToMany(mappedBy = "studyRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<AvailableTimeBlock> availableTimes;
+
+    @Column(length = 1000)
+    private String description;
 }
