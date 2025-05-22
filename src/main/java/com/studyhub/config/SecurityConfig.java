@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/**", "/cafes/simple", "/cafes/all").permitAll() // ✅ 모든 /users 요청 허용
+                        .requestMatchers("/users/**", "/cafes/simple", "/cafes/all", "/payments/verify").permitAll() // /payments 요청 추가
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

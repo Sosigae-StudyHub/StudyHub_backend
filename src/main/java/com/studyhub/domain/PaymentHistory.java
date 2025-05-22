@@ -6,6 +6,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+//결제 기록 엔티티
+
 @Entity
 @Table(name = "payment_history")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -26,10 +28,10 @@ public class PaymentHistory {
     @Column(nullable = false)
     private int amount;
 
-    @Column(name = "paid_at")
+    @Column(name = "paid_at", nullable = false)
     private LocalDateTime paidAt;
 
-    @OneToOne
+    @OneToOne(optional = true)
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 }
