@@ -110,6 +110,6 @@ src/main/java/com/studyhub/
 │   └── CurrentReservationProjection.java (사용 시)
 
 └── StudyhubBackendApplication.java  # 메인 클래스
-
+```
 ---##📝 TODO
 - [ ] 프론트 연동
