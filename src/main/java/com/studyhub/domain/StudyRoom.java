@@ -35,6 +35,9 @@ public class StudyRoom {
     @Column(name = "cancel_notice")
     private String cancelNotice;
 
+    @Column(name= "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "study_cafe_id", nullable = false)
     private StudyCafe studyCafe;
@@ -44,4 +47,6 @@ public class StudyRoom {
 
     @OneToMany(mappedBy = "studyRoom")
     private List<AvailableTimeBlock> availableTimes;
+
+
 }

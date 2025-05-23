@@ -21,13 +21,14 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/**", "/cafes/simple", "/cafes/all").permitAll() // ✅ 모든 /users 요청 허용
+                        .requestMatchers("/users/**", "/cafes/**", "rooms/**","/cafes/all", "/reservations/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

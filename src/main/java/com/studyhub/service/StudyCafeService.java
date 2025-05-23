@@ -5,5 +5,6 @@ import com.studyhub.dto.StudyCafeSimpleDto;
 import java.util.List;
 
 public interface StudyCafeService {
-    List<StudyCafe> getAllCafes(); // ← DTO 아님
+    StudyCafeSimpleDto getCafeById(Long id);
+    List<StudyCafeSimpleDto> getAllCafes(); // ← DTO 아님
 }
