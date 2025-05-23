@@ -10,12 +10,20 @@ public class StudyRoomResponse {
     private String description;
     private int maxCapacity;
     private int price;
+    private String equipmentInfo;
+    private String preReservationNotice;
+    private String postReservationNotice;
+    private String cancelNotice;
 
     public StudyRoomResponse(StudyRoom room) {
         this.id = room.getId();
         this.name = room.getName();
-        this.description = room.getDescription(); // ✅ 수정됨
+        this.description = room.getDescription();
         this.maxCapacity = room.getMaxCapacity();
         this.price = room.getPrice();
+        this.equipmentInfo = room.getEquipmentInfo();
+        this.preReservationNotice = room.getPreReservationNotice();
+        this.postReservationNotice = room.getPostReservationNotice();
+        this.cancelNotice = room.getCancelNotice();
     }
 }
