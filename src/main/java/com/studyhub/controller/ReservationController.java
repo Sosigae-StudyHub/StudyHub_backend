@@ -22,7 +22,7 @@ public class ReservationController {
             reservationService.makeReservation(request);
             return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage()); // ✅ 포인트 부족 or 예약 충돌
         }
     }
 

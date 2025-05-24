@@ -1,8 +1,9 @@
-package com.studyhub.service;
+package com.studyhub.service.impl;
 
 import com.studyhub.domain.StudyRoom;
 import com.studyhub.dto.StudyRoomResponse;
 import com.studyhub.repository.StudyRoomRepository;
+import com.studyhub.service.StudyRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
