@@ -84,7 +84,7 @@ GET /payments/history
 - 세션 기반 (로그인 필수)
 
 ### 📥 요청 예시
-```http
+```
 /payments/history?from=2025-05-01&to=2025-05-31&type=STUDY_ROOM
 ```
 ### 📤 응답 예시
