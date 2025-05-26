@@ -1,12 +1,22 @@
 package com.studyhub.service;
 
+import com.studyhub.dto.ReservationDetailResponse;
 import com.studyhub.dto.ReservationRequest;
+import com.studyhub.dto.ReservationSummaryResponse;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface ReservationService {
-
+    // ✅ 예약 생성(지우)
     void makeReservation(ReservationRequest request);
-
+    //// ✅ 예약 겹침 여부만 확인(지우)
     boolean isOverlappingReservation(Long roomId, LocalDateTime start, LocalDateTime end);
+
+    // ✅ 특정 사용자(userId)의 날짜별 예약 리스트 반환(가연) - 사용자 캘린더 용
+    List<ReservationSummaryResponse> getReservationsByDate(Long userId, LocalDate date);
+
+    // ✅ 예약 상세 정보 반환 메서드(가연)
+    ReservationDetailResponse getReservationDetails(Long reservationId, Long userId);
 }
