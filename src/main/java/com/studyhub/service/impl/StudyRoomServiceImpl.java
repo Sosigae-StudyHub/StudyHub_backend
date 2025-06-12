@@ -1,9 +1,10 @@
-package com.studyhub.service;
+package com.studyhub.service.impl;
 
 import com.studyhub.domain.AvailableTimeBlock;
 import com.studyhub.domain.StudyRoom;
 import com.studyhub.repository.AvailableTimeBlockRepository;
 import com.studyhub.repository.StudyRoomRepository;
+import com.studyhub.service.StudyRoomService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
