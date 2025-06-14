@@ -1,6 +1,7 @@
 package com.studyhub.service.impl;
 
 import com.studyhub.domain.Reservation;
+import com.studyhub.domain.StudyCafe;
 import com.studyhub.domain.StudyRoom;
 import com.studyhub.domain.User;
 import com.studyhub.domain.enums.ReservationStatus;
@@ -8,6 +9,7 @@ import com.studyhub.dto.ReservationDetailResponse;
 import com.studyhub.dto.ReservationRequest;
 import com.studyhub.dto.ReservationSummaryResponse;
 import com.studyhub.repository.ReservationRepository;
+import com.studyhub.repository.StudyCafeRepository;
 import com.studyhub.repository.StudyRoomRepository;
 import com.studyhub.repository.UserRepository;
 import com.studyhub.service.PaymentHistoryService;
@@ -18,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -29,6 +33,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final UserRepository userRepository;
     private final StudyRoomRepository studyRoomRepository;
     private final PaymentHistoryService paymentHistoryService; // ✅ 포인트 결제 서비스 주입(가연)
+    private final StudyCafeRepository studyCafeRepository;
 
     // ✅ 예약 생성(지우)
     @Override
@@ -109,5 +114,50 @@ public class ReservationServiceImpl implements ReservationService {
                 room.getPreReservationNotice(),
                 room.getCancelNotice()
         );
+    }
+
+    // ✅ 마이페이지에서 현재 예약 내역 보여주기 (가연)
+    @Override
+    public Map<String, Object> getCurrentReservationDetails(Long userId) {
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("🟡 [DEBUG] 현재 시각: " + now);
+        System.out.println("🟡 [DEBUG] 세션 userId: " + userId);
+
+        // 🔎 전체 예약 직접 출력 (디버깅용)
+        List<Reservation> all = reservationRepository.findAll();
+        for (Reservation r : all) {
+            System.out.println("🔎 예약 ID: " + r.getId());
+            System.out.println("🔎 사용자 ID: " + r.getUser().getId());
+            System.out.println("🔎 상태: " + r.getStatus());
+            System.out.println("🔎 시간 범위: " + r.getStartTime() + " ~ " + r.getEndTime());
+        }
+
+        Reservation reservation = reservationRepository
+                .findFirstByUserIdAndStartTimeBeforeAndEndTimeAfterAndStatus(
+                        userId, now, now, ReservationStatus.RESERVED
+                ).orElse(null);
+
+        if (reservation == null) {
+            System.out.println("🔴 [DEBUG] 조건에 맞는 예약이 없습니다.");
+            return null;
+        }
+
+        System.out.println("🟢 [DEBUG] 예약 ID: " + reservation.getId());
+
+        StudyRoom room = studyRoomRepository.findById(reservation.getStudyRoom().getId())
+                .orElseThrow(() -> new RuntimeException("스터디룸 없음"));
+
+        StudyCafe cafe = studyCafeRepository.findById(room.getStudyCafe().getId())
+                .orElseThrow(() -> new RuntimeException("스터디카페 없음"));
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("reservationId", reservation.getId());
+        result.put("cafeName", cafe.getName());
+        result.put("roomName", room.getName());
+        result.put("maxCapacity", room.getMaxCapacity());
+        result.put("startTime", reservation.getStartTime());
+        result.put("endTime", reservation.getEndTime());
+
+        return result;
     }
 }

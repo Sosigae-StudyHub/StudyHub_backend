@@ -1,6 +1,7 @@
 package com.studyhub.repository;
 
 import com.studyhub.domain.Reservation;
+import com.studyhub.domain.enums.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -51,5 +52,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Optional<Reservation> findByIdAndUserId(
             @Param("reservationId") Long reservationId,
             @Param("userId") Long userId
+    );
+
+    Optional<Reservation> findFirstByUserIdAndStartTimeBeforeAndEndTimeAfterAndStatus(
+            Long userId, LocalDateTime before, LocalDateTime after, ReservationStatus status
     );
 }

@@ -7,6 +7,7 @@ import com.studyhub.dto.ReservationSummaryResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface ReservationService {
     // ✅ 예약 생성(지우)
@@ -19,4 +20,7 @@ public interface ReservationService {
 
     // ✅ 예약 상세 정보 반환 메서드(가연)
     ReservationDetailResponse getReservationDetails(Long reservationId, Long userId);
+
+    // ✅ 마이페이지에서 현재 예약 내역 보여주기 (가연)
+    Map<String, Object> getCurrentReservationDetails(Long userId);
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -77,6 +78,17 @@ public class ReservationController {
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<?> getCurrentReservation(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) return ResponseEntity.status(401).body("로그인이 필요합니다.");
+
+        Map<String, Object> result = reservationService.getCurrentReservationDetails(userId);
+        if (result == null) return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(result);
     }
 
 }
