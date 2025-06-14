@@ -82,6 +82,7 @@ public class StudyRoomServiceImpl implements StudyRoomService {
         studyRoomRepository.delete(room);
     }
 
+    // 지우
     @Override
     public List<StudyRoomResponse> getRoomsResponseByCafeId(Long cafeId) {
         List<StudyRoom> rooms = studyRoomRepository.findByStudyCafeId(cafeId);
@@ -89,10 +90,6 @@ public class StudyRoomServiceImpl implements StudyRoomService {
                 .map(StudyRoomResponse::new)
                 .toList();
     }
-
-    @Override
-    public List<StudyRoom> getRoomsByCafeId(Long studyCafeId) {
-        return studyRoomRepository.findByStudyCafeId(studyCafeId);
-    }
+    
 
 }

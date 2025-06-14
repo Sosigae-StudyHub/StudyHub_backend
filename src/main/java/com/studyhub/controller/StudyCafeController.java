@@ -117,7 +117,7 @@ public class StudyCafeController {
     }
     
     // 지우
-    @GetMapping("/{id}")
+    @GetMapping("/simple/{id}")
     public ResponseEntity<StudyCafeSimpleDto> getCafeSimpleById(@PathVariable Long id) {
         return ResponseEntity.ok(studyCafeService.getCafeSimpleById(id));
     }
