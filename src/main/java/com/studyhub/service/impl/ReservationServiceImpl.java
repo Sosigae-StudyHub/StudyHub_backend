@@ -74,7 +74,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.existsOverlappingReservation(roomId, start, end);
     }
 
-    // ✅ 날짜별 예약 요약 목록 반환(가연) - 사용자 캘린더 용
+    // ✅ 사용자 캘린더 용  - 날짜별 예약 요약 목록 반환(가연)
     @Override
     public List<ReservationSummaryResponse> getReservationsByDate(Long userId, LocalDate date) {
         // 날짜의 00:00 ~ 23:59까지 범위 설정
@@ -96,23 +96,25 @@ public class ReservationServiceImpl implements ReservationService {
                 .toList();
     }
 
-    // ✅ 예약 상세 정보 반환 (가연)
+    // ✅ 캘린더 - 예약 상세 정보 반환 (가연)
     @Override
     public ReservationDetailResponse getReservationDetails(Long reservationId, Long userId) {
+        // 예약 ID와 사용자 ID로 예약 검증
         Reservation reservation = reservationRepository.findByIdAndUserId(reservationId, userId)
                 .orElseThrow(() -> new NoSuchElementException("예약이 존재하지 않거나 권한이 없습니다."));
 
         StudyRoom room = reservation.getStudyRoom();
+        StudyCafe cafe = room.getStudyCafe();
 
         return new ReservationDetailResponse(
-                room.getStudyCafe().getName(),
-                room.getName(),
-                room.getMaxCapacity(),
-                reservation.getStartTime(),
-                reservation.getEndTime(),
-                null, // imageUrl은 아직 미지원
-                room.getPreReservationNotice(),
-                room.getCancelNotice()
+                cafe.getName(),                        // cafeName
+                cafe.getAddress(),                     // cafeAddress
+                room.getName(),                        // roomName
+                room.getMaxCapacity(),                 // roomCapacity
+                reservation.getStartTime(),            // startTime
+                reservation.getEndTime(),              // endTime
+                room.getPostReservationNotice(),       // postReservationNotice ← 예약자 공지사항
+                room.getCancelNotice()                 // cancelNotice
         );
     }
 
