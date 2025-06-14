@@ -107,7 +107,11 @@ public class UserController {
         response.put("email", user.getEmail());
         response.put("phone", user.getPhone());
         response.put("userType", user.getUserType().name());
-        if (user.getUserType().equals(UserType.OWNER)) {
+
+        // 📌 userType 에 따른 정보 포함 (수정)
+        if (user.getUserType().equals(UserType.USER)) {
+            response.put("point", user.getPoint());
+        } else if (user.getUserType().equals(UserType.OWNER)) {
             response.put("businessNumber", user.getBusinessNumber());
         }
         return ResponseEntity.ok(response);
