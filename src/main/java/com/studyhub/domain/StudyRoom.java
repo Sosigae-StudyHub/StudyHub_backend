@@ -35,6 +35,9 @@ public class StudyRoom {
     @Column(name = "cancel_notice")
     private String cancelNotice;
 
+    @Column(name= "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "study_cafe_id", nullable = false)
     @JsonIgnore
@@ -46,7 +49,4 @@ public class StudyRoom {
     @OneToMany(mappedBy = "studyRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<AvailableTimeBlock> availableTimes;
-
-    @Column(length = 1000)
-    private String description;
 }

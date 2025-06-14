@@ -1,5 +1,6 @@
 package com.studyhub.controller;
 
+import com.studyhub.dto.StudyRoomResponse;
 import com.studyhub.domain.AvailableTimeBlock;
 import com.studyhub.domain.StudyCafe;
 import com.studyhub.domain.StudyRoom;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/rooms")
 @RequiredArgsConstructor
@@ -167,5 +168,9 @@ public class StudyRoomController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/by-cafe/{cafeId}")
+    public ResponseEntity<List<StudyRoomResponse>> getRoomsResponseByCafeId(@PathVariable Long cafeId) {
+        List<StudyRoomResponse> response = studyRoomService.getRoomsResponseByCafeId(cafeId);
+        return ResponseEntity.ok(response);
+    }
 }
-

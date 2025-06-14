@@ -1,6 +1,7 @@
 package com.studyhub.service.impl;
 
 import com.studyhub.domain.StudyCafe;
+import com.studyhub.dto.StudyCafeSimpleDto;
 import com.studyhub.repository.StudyCafeRepository;
 import com.studyhub.service.StudyCafeService;
 import jakarta.persistence.EntityNotFoundException;
@@ -76,5 +77,21 @@ public class StudyCafeServiceImpl implements StudyCafeService {
     public StudyCafe getCafeById(Long cafeId) {
         return studyCafeRepository.findById(cafeId)
                 .orElseThrow(() -> new EntityNotFoundException("스터디카페를 찾을 수 없습니다."));
+    }
+
+    @Override
+    public StudyCafeSimpleDto getCafeSimpleById(Long id) {
+        StudyCafe cafe = studyCafeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 카페 없음"));
+        return new StudyCafeSimpleDto(cafe);
+    }
+
+
+    @Override
+    public List<StudyCafeSimpleDto> getAllCafesSimple() {
+        return studyCafeRepository.findAll().stream()
+                .map(c -> new StudyCafeSimpleDto(
+                        c.getId(), c.getName(), c.getAddress(), c.getLatitude(), c.getLongitude()))
+                .toList();
     }
 }

@@ -2,6 +2,7 @@ package com.studyhub.service.impl;
 
 import com.studyhub.domain.AvailableTimeBlock;
 import com.studyhub.domain.StudyRoom;
+import com.studyhub.dto.StudyRoomResponse;
 import com.studyhub.repository.AvailableTimeBlockRepository;
 import com.studyhub.repository.StudyRoomRepository;
 import com.studyhub.service.StudyRoomService;
@@ -81,5 +82,17 @@ public class StudyRoomServiceImpl implements StudyRoomService {
         studyRoomRepository.delete(room);
     }
 
+    @Override
+    public List<StudyRoomResponse> getRoomsResponseByCafeId(Long cafeId) {
+        List<StudyRoom> rooms = studyRoomRepository.findByStudyCafeId(cafeId);
+        return rooms.stream()
+                .map(StudyRoomResponse::new)
+                .toList();
+    }
+
+    @Override
+    public List<StudyRoom> getRoomsByCafeId(Long studyCafeId) {
+        return studyRoomRepository.findByStudyCafeId(studyCafeId);
+    }
 
 }

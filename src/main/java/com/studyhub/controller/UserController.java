@@ -78,20 +78,23 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getSessionInfo(HttpSession session) {
-        Object userId = session.getAttribute("userId");
-        Object userType = session.getAttribute("userType");
-        Object username = session.getAttribute("username");
+        Long userId = (Long) session.getAttribute("userId");
 
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
+        User user = userService.findById(userId);
+
         Map<String, Object> info = new HashMap<>();
-        info.put("userId", userId);
-        info.put("userType", userType);
-        info.put("username", username);
+        info.put("userId", user.getId());
+        info.put("username", user.getUsername());
+        info.put("phone", user.getPhone());
+        info.put("userType", user.getUserType());
+
         return ResponseEntity.ok(info);
     }
+
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfileInfo(HttpSession session) {
@@ -104,7 +107,11 @@ public class UserController {
         response.put("email", user.getEmail());
         response.put("phone", user.getPhone());
         response.put("userType", user.getUserType().name());
-        if (user.getUserType().equals(UserType.OWNER)) {
+
+        // 📌 userType 에 따른 정보 포함 (수정)
+        if (user.getUserType().equals(UserType.USER)) {
+            response.put("point", user.getPoint());
+        } else if (user.getUserType().equals(UserType.OWNER)) {
             response.put("businessNumber", user.getBusinessNumber());
         }
         return ResponseEntity.ok(response);

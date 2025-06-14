@@ -115,6 +115,12 @@ public class StudyCafeController {
         StudyCafe cafe = studyCafeService.getCafeById(cafeId);
         return ResponseEntity.ok(cafe);
     }
+    
+    // 지우
+    @GetMapping("/{id}")
+    public ResponseEntity<StudyCafeSimpleDto> getCafeSimpleById(@PathVariable Long id) {
+        return ResponseEntity.ok(studyCafeService.getCafeSimpleById(id));
+    }
 
 }
 
