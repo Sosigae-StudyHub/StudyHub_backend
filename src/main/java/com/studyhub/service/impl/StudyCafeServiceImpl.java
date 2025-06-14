@@ -1,7 +1,8 @@
-package com.studyhub.service;
+package com.studyhub.service.impl;
 
 import com.studyhub.domain.StudyCafe;
 import com.studyhub.repository.StudyCafeRepository;
+import com.studyhub.service.StudyCafeService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,8 @@
-package com.studyhub.service;
+package com.studyhub.service.impl;
 
 import com.studyhub.dto.RevenueStatsDto;
 import com.studyhub.repository.RevenueRepository;
+import com.studyhub.service.RevenueService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
