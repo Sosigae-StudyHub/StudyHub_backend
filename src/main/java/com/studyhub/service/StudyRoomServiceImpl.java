@@ -60,7 +60,7 @@ public class StudyRoomServiceImpl implements StudyRoomService {
         }
         availableTimeBlockRepository.saveAll(timeBlocks);
 
-        return existing;
+        return studyRoomRepository.save(existing);
     }
 
     @Override

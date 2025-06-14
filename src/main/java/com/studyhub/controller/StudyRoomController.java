@@ -138,27 +138,34 @@ public class StudyRoomController {
 
     // 특정 카페에 등록된 스터디룸 목록 조회
     @GetMapping("/cafe/{studyCafeId}")
-    public ResponseEntity<List<StudyRoomListDto>> getRooms(@PathVariable Long studyCafeId) {
+    public ResponseEntity<List<StudyRoomResponseDto>> getRooms(@PathVariable Long studyCafeId) {
         List<StudyRoom> rooms = studyRoomService.getRoomsByCafeId(studyCafeId);
 
-        List<StudyRoomListDto> response = rooms.stream()
+        List<StudyRoomResponseDto> response = rooms.stream()
                 .map(room -> {
                     List<Integer> availableHours = room.getAvailableTimes().stream()
                             .filter(AvailableTimeBlock::isAvailable)
                             .map(AvailableTimeBlock::getHour)
                             .toList();
 
-                    return new StudyRoomListDto(
-                            room.getId(),
-                            room.getName(),
-                            room.getMaxCapacity(),
-                            room.getPrice(),
-                            availableHours
-                    );
+                    return StudyRoomResponseDto.builder()
+                            .id(room.getId())
+                            .name(room.getName())
+                            .maxCapacity(room.getMaxCapacity())
+                            .price(room.getPrice())
+                            .equipmentInfo(room.getEquipmentInfo())
+                            .preReservationNotice(room.getPreReservationNotice())
+                            .postReservationNotice(room.getPostReservationNotice())
+                            .cancelNotice(room.getCancelNotice())
+                            .description(room.getDescription())
+                            .studyCafeId(room.getStudyCafe().getId())
+                            .availableHours(availableHours) // 이 필드는 StudyRoomResponseDto에 새로 추가 필요
+                            .build();
                 })
                 .toList();
 
         return ResponseEntity.ok(response);
     }
+
 }
 

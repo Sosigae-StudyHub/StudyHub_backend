@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "STUDY_CAFES")
 @Getter @Setter
@@ -38,4 +40,8 @@ public class StudyCafe {
     @JoinColumn(name = "OWNER_ID", nullable = false)
     @JsonBackReference
     private User owner;
+
+    @OneToMany(mappedBy = "studyCafe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<StudyRoom> studyRooms;
 }

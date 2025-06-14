@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,5 @@ public class StudyRoomResponseDto {
     private String cancelNotice;
     private String description;
     private Long studyCafeId;
+    private List<Integer> availableHours; // ← 이거 추가!
 }
