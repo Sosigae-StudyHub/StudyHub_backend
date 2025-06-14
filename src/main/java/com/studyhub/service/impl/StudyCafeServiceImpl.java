@@ -1,8 +1,9 @@
-package com.studyhub.service;
+package com.studyhub.service.impl;
 
 import com.studyhub.domain.StudyCafe;
 import com.studyhub.dto.StudyCafeSimpleDto;
 import com.studyhub.repository.StudyCafeRepository;
+import com.studyhub.service.StudyCafeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

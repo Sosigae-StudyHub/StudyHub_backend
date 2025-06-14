@@ -1,7 +1,8 @@
-package com.studyhub.service;
+package com.studyhub.service.impl;
 
 import com.studyhub.domain.User;
 import com.studyhub.repository.UserRepository;
+import com.studyhub.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
