@@ -45,17 +45,30 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
     @Override
     @Transactional
     public void recordStudyRoomPayment(User user, Reservation reservation) {
-        int price = reservation.getStudyRoom().getPrice();
+//        int price = reservation.getStudyRoom().getPrice();
 
-        if (user.getPoint() < price) {
+        int hourlyPrice = reservation.getStudyRoom().getPrice();    // 시간 당 금액
+
+        // 시간 차 계산 (분 단위 → 시간 단위 환산)
+        long minutes = java.time.Duration.between(
+                reservation.getStartTime(), reservation.getEndTime()
+        ).toMinutes();
+
+        double hours = minutes / 60.0;
+        int totalPrice = (int) Math.ceil(hours * hourlyPrice); // 반올림하여 과금 (ex. 1.3시간 → 2시간 요금)
+        
+        // 포인트 부족 여부 확인
+        if (user.getPoint() < totalPrice) {
             throw new IllegalStateException("포인트가 부족합니다.");
         }
 
-        user.setPoint(user.getPoint() - price); // 포인트 차감
+        // 포인트 차감
+        user.setPoint(user.getPoint() - totalPrice);
 
+        // 결제 이력 저장
         PaymentHistory history = PaymentHistory.builder()
                 .user(user)
-                .amount(price)
+                .amount(totalPrice)
                 .type(PaymentType.STUDY_ROOM)
                 .paidAt(LocalDateTime.now())
                 .reservation(reservation)
