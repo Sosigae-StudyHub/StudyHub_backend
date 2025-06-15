@@ -1,5 +1,6 @@
 package com.studyhub.controller;
 
+import com.studyhub.dto.OwnerReservationResponse;
 import com.studyhub.dto.ReservationDetailResponse;
 import com.studyhub.dto.ReservationRequest;
 import com.studyhub.dto.ReservationSummaryResponse;
@@ -89,6 +90,13 @@ public class ReservationController {
         if (result == null) return ResponseEntity.noContent().build();
 
         return ResponseEntity.ok(result);
+    }
+
+    // 사업자 캘린더 (가연)
+    @GetMapping("/owner/cafe/{cafeId}/reservation_list")
+    public ResponseEntity<List<OwnerReservationResponse>> getOwnerReservations(@PathVariable Long cafeId) {
+        List<OwnerReservationResponse> result = reservationService.getFutureReservationsForOwner(cafeId);
+        return ResponseEntity.ok(result);  // 현재 시간 기준 이후 예약 목록 반환
     }
 
 }

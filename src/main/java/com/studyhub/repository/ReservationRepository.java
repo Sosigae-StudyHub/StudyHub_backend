@@ -57,4 +57,17 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Optional<Reservation> findFirstByUserIdAndStartTimeBeforeAndEndTimeAfterAndStatus(
             Long userId, LocalDateTime before, LocalDateTime after, ReservationStatus status
     );
+
+    // ✅ 사업자 캘린더 - 스터디카페 별 예약 내역 불러오기 (현재 시간 기준 앞으로의 예약 내역만 가져옴)
+    @Query(value = """
+    SELECT r.* FROM reservations r
+    JOIN study_rooms sr ON r.study_room_id = sr.id
+    JOIN study_cafes sc ON sr.study_cafe_id = sc.id
+    JOIN users u ON r.user_id = u.id
+    WHERE sc.id = :cafeId
+    AND r.end_time > SYSDATE
+    ORDER BY r.end_time ASC
+    """, nativeQuery = true)
+    List<Reservation> findFutureReservationsByCafeId(@Param("cafeId") Long cafeId);
+
 }

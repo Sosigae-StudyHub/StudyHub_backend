@@ -1,5 +1,6 @@
 package com.studyhub.service;
 
+import com.studyhub.dto.OwnerReservationResponse;
 import com.studyhub.dto.ReservationDetailResponse;
 import com.studyhub.dto.ReservationRequest;
 import com.studyhub.dto.ReservationSummaryResponse;
@@ -23,4 +24,8 @@ public interface ReservationService {
 
     // ✅ 마이페이지에서 현재 예약 내역 보여주기 (가연)
     Map<String, Object> getCurrentReservationDetails(Long userId);
+
+    // ✅ 사업자 캘린더 - 현재 시간 기준 앞으로의 예약 내역만 가져옴 (가연)
+    List<OwnerReservationResponse> getFutureReservationsForOwner(Long cafeId); // 스터디카페 별 예약 내역 불러오기
+
 }

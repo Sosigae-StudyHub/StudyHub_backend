@@ -5,6 +5,7 @@ import com.studyhub.domain.StudyCafe;
 import com.studyhub.domain.StudyRoom;
 import com.studyhub.domain.User;
 import com.studyhub.domain.enums.ReservationStatus;
+import com.studyhub.dto.OwnerReservationResponse;
 import com.studyhub.dto.ReservationDetailResponse;
 import com.studyhub.dto.ReservationRequest;
 import com.studyhub.dto.ReservationSummaryResponse;
@@ -161,5 +162,24 @@ public class ReservationServiceImpl implements ReservationService {
         result.put("endTime", reservation.getEndTime());
 
         return result;
+    }
+
+    // ✅ 사업자 캘린더
+    @Override
+    public List<OwnerReservationResponse> getFutureReservationsForOwner(Long cafeId) {
+        List<Reservation> reservations = reservationRepository.findFutureReservationsByCafeId(cafeId);
+
+        System.out.println("📌 현재 시각: " + LocalDateTime.now());
+
+        // Reservation → DTO 변환 : 필요한 예약 필드 DTO로 추출해서 리스트로 반환
+        return reservations.stream().map(r -> new OwnerReservationResponse(
+                r.getStudyRoom().getName(),
+                r.getStudyRoom().getMaxCapacity(),
+                r.getUser().getUsername(),
+                r.getUser().getPhone(),
+                r.getStartTime(),
+                r.getEndTime(),
+                r.getStudyRoom().getPrice()
+        )).toList();
     }
 }
