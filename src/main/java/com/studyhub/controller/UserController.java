@@ -103,6 +103,7 @@ public class UserController {
 
         User user = userService.findById(userId);
         Map<String, Object> response = new HashMap<>();
+        response.put("userId", user.getId()); // 수정: userId 추가
         response.put("name", user.getUsername());
         response.put("email", user.getEmail());
         response.put("phone", user.getPhone());

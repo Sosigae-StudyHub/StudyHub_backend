@@ -25,6 +25,14 @@ public class PaymentVerificationController {
     // 포트원 V2 포인트 충전 검증 API
     @PostMapping("/verify")
     public ResponseEntity<String> verifyPayment(@RequestBody PaymentVerificationRequest request) {
+        System.out.println("✅ 검증 요청 도착: " + request);
+        System.out.println("userId: " + request.getUserId() + ", amount: " + request.getAmount());
+
+        // 🔐 입력값 유효성 검증
+        if (request.getUserId() == null || request.getAmount() <= 0 || request.getPaymentId() == null) {
+            return ResponseEntity.badRequest().body("❌ 요청 값이 잘못되었습니다.");
+        }
+
         boolean valid = portOneService.verifyPaymentByPaymentId(request.getPaymentId(), request.getAmount());
         if (!valid) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("결제 검증 실패");
