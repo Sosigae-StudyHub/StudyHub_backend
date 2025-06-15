@@ -15,6 +15,32 @@ import java.util.Optional;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
     @Query("""
+    SELECT r FROM Reservation r
+    WHERE r.studyRoom.id = :roomId
+    AND r.startTime >= :startOfDay
+    AND r.startTime < :endOfDay
+""")
+    List<Reservation> findByRoomIdAndDate(
+            @Param("roomId") Long roomId,
+            @Param("startOfDay") LocalDateTime startOfDay,
+            @Param("endOfDay") LocalDateTime endOfDay
+    );
+
+
+    @Query("""
+        SELECT DISTINCT EXTRACT(HOUR FROM r.startTime)
+        FROM Reservation r
+        WHERE r.studyRoom.id = :roomId
+          AND r.startTime >= :startOfDay
+          AND r.startTime < :endOfDay
+    """)
+    List<Integer> findReservedHoursByRoomIdAndDate(
+            @Param("roomId") Long roomId,
+            @Param("startOfDay") LocalDateTime startOfDay,
+            @Param("endOfDay") LocalDateTime endOfDay
+    );
+
+    @Query("""
         SELECT CASE WHEN COUNT(r) > 0 THEN TRUE ELSE FALSE END
         FROM Reservation r
         WHERE r.studyRoom.id = :roomId
