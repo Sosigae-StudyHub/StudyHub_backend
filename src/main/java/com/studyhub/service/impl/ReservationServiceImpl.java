@@ -160,6 +160,8 @@ public class ReservationServiceImpl implements ReservationService {
         result.put("maxCapacity", room.getMaxCapacity());
         result.put("startTime", reservation.getStartTime());
         result.put("endTime", reservation.getEndTime());
+        result.put("cafeId", cafe.getId());             // 추가
+        result.put("roomId", room.getId());             // 추가
 
         return result;
     }
